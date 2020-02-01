@@ -155,6 +155,11 @@ void ABaseDroid::OnSkillcheckUp_Implementation()
 
 void ABaseDroid::Interact_Implementation()
 {
+	if(InSkillcheck)
+	{
+		return;
+	}
+	
 	//Detect interactable objects
 	FVector boxSize = FVector(50.0f, 50.0f, 100.0f);
 	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
