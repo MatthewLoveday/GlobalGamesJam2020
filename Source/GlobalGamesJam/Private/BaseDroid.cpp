@@ -95,7 +95,7 @@ void ABaseDroid::InteractWithTile_Implementation(UObject* tile)
 	ATileBase* tileInterface = Cast<ATileBase>(tile);
 	if(tileInterface)
 	{
-		tileInterface->Repair(&ABaseDroid::OnInteractionComplete, this);
+		//Start Skillcheck
 
 		InSkillcheck = true;
 		
@@ -105,9 +105,11 @@ void ABaseDroid::InteractWithTile_Implementation(UObject* tile)
 
 }
 
-void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType)
+void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType, ATileBase* Tile)
 {
 	//do nothing
+
+	Tile->RepairLayer();
 }
 
 void ABaseDroid::MoveHorizontal(float value)

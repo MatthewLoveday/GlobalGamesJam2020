@@ -8,7 +8,24 @@
 #include "Components/StaticMeshComponent.h"
 #include "Containers/Map.h"
 #include "BaseDroid.h"
+#include "SkillCheckType.h"
 #include "TileBase.generated.h"
+
+USTRUCT(BlueprintType)
+struct FRepairData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ERepairType repairType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ESkillCheckType skillcheckType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMesh* mesh;
+};
 
 UCLASS()
 class GLOBALGAMESJAM_API ATileBase : public AActor
@@ -34,9 +51,10 @@ public:
 	UStaticMeshComponent* staticMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TMap<ERepairType, UStaticMesh*> m_MeshToRepairType;
+	TArray<FRepairData> m_MeshToRepairType;
 
-
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FRepairData SearchArrayForRepairType(ERepairType type);
 
 	//Interface Calls
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -53,5 +71,5 @@ public:
 
 	typedef void(ABaseDroid::* DroidCallback)(ERepairType);
 	
-	void Repair(DroidCallback onComplete, ABaseDroid* droid);
+	void RepairLayer();
 };

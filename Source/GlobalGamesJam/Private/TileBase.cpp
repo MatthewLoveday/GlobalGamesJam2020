@@ -28,16 +28,26 @@ void ATileBase::Tick(float DeltaTime)
 
 }
 
-void ATileBase::Repair(DroidCallback onComplete, ABaseDroid* droid)
+FRepairData ATileBase::SearchArrayForRepairType(ERepairType type)
+{
+	for(int32 i = 0; i < m_MeshToRepairType.Num(); i++)
+	{
+		if(m_MeshToRepairType[i].repairType == type)
+		{
+			return m_MeshToRepairType[i];
+		}
+	}
+
+	//return empty
+	return FRepairData();
+}
+
+void ATileBase::RepairLayer()
 {
 	if(m_RepairQueue.Num() != 0)
 	{
-		ERepairType type = m_RepairQueue[0];
+		OnRepair(m_RepairQueue[0]);
 		m_RepairQueue.RemoveAt(0);
-		
-		(droid->* (onComplete))(type);
-
-		OnRepair(type);
 	}
 }
 

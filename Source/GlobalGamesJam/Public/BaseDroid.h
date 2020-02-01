@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "BaseDroid.generated.h"
 
+class ATileBase;
 UCLASS()
 class GLOBALGAMESJAM_API ABaseDroid : public ACharacter
 {
@@ -49,7 +50,7 @@ public:
 
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void OnInteractionComplete(ERepairType repairType);
+	void OnInteractionComplete(ERepairType repairType, ATileBase* Tile);
 	
 	//Movement Functions
 	UFUNCTION()
