@@ -18,17 +18,12 @@ enum class ESkillCheckType : uint8
 	RandomCheck UMETA(DisplayName = "Random Skill Check")
 };
 
-// This class does not need to be modified.
-UINTERFACE(MinimalAPI, BlueprintType)
-class UTile : public UInterface
-{
-	GENERATED_BODY()
-};
 
 /**
  *
  */
-class GLOBALGAMESJAM_API ITile
+UCLASS()
+class GLOBALGAMESJAM_API ATile : public AActor
 {
 	GENERATED_BODY()
 
@@ -38,7 +33,7 @@ public:
 
 	TQueue<ERepairType> m_RepairQueue;
 
-	typedef void(ITile::*Callback)(void);
+	typedef void(ATile::*Callback)(void);
 	typedef void(ABaseDroid::*DroidCallback)(ERepairType);
 
 	DroidCallback m_OnComplete;
@@ -57,7 +52,11 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnHover();
-	virtual void OnHover_Implementation();
+	//virtual void OnHover_Implementation();
 
 
+
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void OnRepair(ERepairType old);
 };

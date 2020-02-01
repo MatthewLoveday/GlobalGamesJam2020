@@ -89,14 +89,14 @@ void ABaseDroid::EnableMovement()
 
 void ABaseDroid::InteractWithTile_Implementation(UObject* tile)
 {
-	ITile* tileInterface = Cast<ITile>(tile);
+	ATile* tileInterface = Cast<ATile>(tile);
 	if(tileInterface)
 	{
-		tileInterface->Repair(&ABaseDroid::OnInteractionComplete, this);
+		tileInterface->Repair(&ABaseDroid::OnInteractionComplete_Implementation, this);
 	}
 
 	//Turn off movement
-	this->DisableMovement();
+	DisableMovement();
 }
 
 void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType)
@@ -153,16 +153,16 @@ void ABaseDroid::Interact_Implementation()
 	{
 		//outhits must have at least one member
 		//cast outhit to ITile
-		ITile* tileInterface;
+		ATile* tileInterface;
 
 		for (int32 i = 0; i < outHits.Num(); i++)
 		{
-			tileInterface = Cast<ITile>(outHits[i].Actor);
+			tileInterface = Cast<ATile>(outHits[i].Actor);
 
 			if (tileInterface != nullptr)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interacting with tile"));
-				InteractWithTile(outHits[i].Actor.Get());
+				InteractWithTile_Implementation(outHits[i].Actor.Get());
 				break;
 			}
 		}

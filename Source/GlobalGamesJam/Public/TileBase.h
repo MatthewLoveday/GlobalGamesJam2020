@@ -10,7 +10,7 @@
 #include "TileBase.generated.h"
 
 UCLASS()
-class GLOBALGAMESJAM_API ATileBase : public AActor, public ITile
+class GLOBALGAMESJAM_API ATileBase : public ATile
 {
 	GENERATED_BODY()
 	
@@ -26,12 +26,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* m_StaticMeshComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* staticMesh;
 
-	UPROPERTY(EditAnywhere)
-		TMap<ERepairType, UStaticMeshComponent*> m_MeshToRepairType;
-
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<ERepairType, UStaticMesh*> m_MeshToRepairType;
 
 };

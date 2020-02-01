@@ -3,8 +3,8 @@
 
 #include "Tile.h"
 
-// Add default functionality here for any ITile functions that are not pure virtual.
-bool ITile::NeedRepair_Implementation()
+// Add default functionality here for any UTile functions that are not pure virtual.
+bool ATile::NeedRepair_Implementation()
 {
 	if (m_RepairQueue.IsEmpty())
 		return false;
@@ -12,14 +12,14 @@ bool ITile::NeedRepair_Implementation()
 	return true;
 }
 
-ERepairType ITile::GetCurrentRepairType_Implementation()
+ERepairType ATile::GetCurrentRepairType_Implementation()
 {
 	ERepairType returnValue;
 	m_RepairQueue.Peek(returnValue);
 	return returnValue;
 }
 
-void ITile::Repair(DroidCallback onComplete, ABaseDroid* droid)
+void ATile::Repair(DroidCallback onComplete, ABaseDroid* droid)
 {
 	if(!m_RepairQueue.IsEmpty())
 	{
@@ -28,9 +28,12 @@ void ITile::Repair(DroidCallback onComplete, ABaseDroid* droid)
 		m_RepairQueue.Pop();
 		
 		(droid->* (onComplete))(type);
+
+		OnRepair(type);
 	}
 }
-void ITile::OnHover_Implementation()
+
+void ATile::OnHover_Implementation()
 {
 	//Do Nothing
 }
