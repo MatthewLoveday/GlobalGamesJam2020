@@ -67,7 +67,7 @@ ABaseDroid::ABaseDroid()
 	DroidCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 	
 	interactCollisionBoxSize = FVector(50.0f, 50.0f, 100.0f);
-
+	
 	InSkillcheck = false;
 }
 
