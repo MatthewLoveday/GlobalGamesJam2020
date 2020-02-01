@@ -14,4 +14,6 @@ class GLOBALGAMESJAM_API AGlobalGamesJamGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AGlobalGamesJamGameModeBase();
 };

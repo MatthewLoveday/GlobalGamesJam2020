@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "RepairType.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "BaseDroid.generated.h"
 
@@ -23,15 +24,38 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* DroidMesh;
 
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* DroidCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class USpringArmComponent* CameraBoom;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+	//Movement Functions
+	UFUNCTION()
+	void MoveHorizontal(float value);
+
+	UFUNCTION()
+	void MoveVertical(float value);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector interactCollisionBoxSize;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	UFUNCTION(BlueprintCallable)
+	void CancelInteraction();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnRepairComplete();
 };
