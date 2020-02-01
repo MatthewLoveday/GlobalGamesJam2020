@@ -34,7 +34,23 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
+	void DisableMovement();
+
+	UFUNCTION(BlueprintCallable)
+	void EnableMovement();
+
+	
 public:	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void InteractWithTile(UObject* tile);
+	virtual void InteractWithTile_Implementation(UObject* tile);
+
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void OnInteractionComplete(ERepairType repairType);
+	virtual void OnInteractionComplete_Implementation(ERepairType repairType);
+	
 	//Movement Functions
 	UFUNCTION()
 	void MoveHorizontal(float value);
@@ -52,6 +68,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Interact();
+	virtual void Interact_Implementation();
 
 	UFUNCTION(BlueprintCallable)
 	void CancelInteraction();

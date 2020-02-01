@@ -39,28 +39,25 @@ public:
 	TQueue<ERepairType> m_RepairQueue;
 
 	typedef void(ITile::*Callback)(void);
-	typedef void(ABaseDroid::*DroidCallback)(void);
+	typedef void(ABaseDroid::*DroidCallback)(ERepairType);
 
 	DroidCallback m_OnComplete;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		bool NeedRepair();
+	bool NeedRepair();
 	virtual bool NeedRepair_Implementation();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		ERepairType GetCurrentRepairType();
+	ERepairType GetCurrentRepairType();
 	virtual ERepairType GetCurrentRepairType_Implementation();
-
-	Callback Repair(DroidCallback onComplete);
-	virtual Callback Repair_Implementation(DroidCallback onComplete);
+	
+	virtual void Repair(DroidCallback onComplete, ABaseDroid* droid);
 
 		//void OnComplete(Callback onCompletePtr);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void OnCancel();
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void OnHover();
+	void OnHover();
+	virtual void OnHover_Implementation();
 
 
 };

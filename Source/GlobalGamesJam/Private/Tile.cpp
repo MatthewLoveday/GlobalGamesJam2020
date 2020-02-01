@@ -18,9 +18,19 @@ ERepairType ITile::GetCurrentRepairType_Implementation()
 	m_RepairQueue.Peek(returnValue);
 	return returnValue;
 }
-ITile::Callback ITile::Repair_Implementation(DroidCallback onComplete)
-{
-	m_OnComplete = onComplete;
 
-	return &ITile::OnCancel;
+void ITile::Repair(DroidCallback onComplete, ABaseDroid* droid)
+{
+	if(!m_RepairQueue.IsEmpty())
+	{
+		ERepairType type;
+		m_RepairQueue.Peek(type);
+		m_RepairQueue.Pop();
+		
+		(droid->* (onComplete))(type);
+	}
+}
+void ITile::OnHover_Implementation()
+{
+	//Do Nothing
 }

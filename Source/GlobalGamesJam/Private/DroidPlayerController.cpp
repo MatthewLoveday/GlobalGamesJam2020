@@ -16,6 +16,11 @@ void ADroidPlayerController::MoveCharacterVertical(float value)
 	Cast<ABaseDroid>(GetPawn())->MoveVertical (value);
 }
 
+void ADroidPlayerController::Interact()
+{
+	Cast<ABaseDroid>(GetPawn())->Interact();
+}
+
 void ADroidPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -24,4 +29,6 @@ void ADroidPlayerController::SetupInputComponent()
 	//Forward Input To Possessed Droid
 	InputComponent->BindAxis("HorizontalMove", this, &ADroidPlayerController::MoveCharacterHorizontal);
 	InputComponent->BindAxis("VerticalMove", this, &ADroidPlayerController::MoveCharacterVertical);
+
+	InputComponent->BindAction("Interact", IE_Pressed, this, &ADroidPlayerController::Interact);
 }

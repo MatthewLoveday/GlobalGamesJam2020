@@ -14,6 +14,7 @@
 #include "DroidPlayerController.h"
 #include "DrawDebugHelpers.h"
 #include "Engine.h"
+#include "Tile.h"
 
 // Sets default values
 ABaseDroid::ABaseDroid()
@@ -74,6 +75,35 @@ void ABaseDroid::BeginPlay()
 	
 }
 
+void ABaseDroid::DisableMovement()
+{
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->DisableMovement();
+}
+
+void ABaseDroid::EnableMovement()
+{
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+}
+
+void ABaseDroid::InteractWithTile_Implementation(UObject* tile)
+{
+	ITile* tileInterface = Cast<ITile>(tile);
+	if(tileInterface)
+	{
+		tileInterface->Repair(&ABaseDroid::OnInteractionComplete, this);
+	}
+
+	//Turn off movement
+	this->DisableMovement();
+}
+
+void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType)
+{
+	//do nothing
+}
+
 void ABaseDroid::MoveHorizontal(float value)
 {
 	//Move Horizontally in the world direction
@@ -92,30 +122,6 @@ void ABaseDroid::MoveVertical(float value)
 void ABaseDroid::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//Detect interactable objects
-	FVector boxSize = FVector(50.0f, 50.0f, 100.0f);
-	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
-
-	FCollisionShape interactableDetector = FCollisionShape::MakeBox(boxSize);
-
-	
-
-	TArray<FHitResult> outHits;
-
-	bool hit = GetWorld()->SweepMultiByChannel(outHits, 
-									boxPos, 
-									boxPos + GetActorForwardVector(), 
-									FQuat::Identity,
-									ECC_GameTraceChannel1,
-									interactableDetector);
-
-	if (hit)
-	{
-		//outhits must have at least one member
-		//cast outhit to ITile
-		
-	}
 }
 
 // Called to bind functionality to input
@@ -126,13 +132,53 @@ void ABaseDroid::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+void ABaseDroid::Interact_Implementation()
+{
+	//Detect interactable objects
+	FVector boxSize = FVector(50.0f, 50.0f, 100.0f);
+	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
+
+	FCollisionShape interactableDetector = FCollisionShape::MakeBox(boxSize);
+
+	TArray<FHitResult> outHits;
+
+	bool hit = GetWorld()->SweepMultiByChannel(outHits,
+		boxPos,
+		boxPos + GetActorForwardVector(),
+		FQuat::Identity,
+		ECC_GameTraceChannel1,
+		interactableDetector);
+
+	if (hit)
+	{
+		//outhits must have at least one member
+		//cast outhit to ITile
+		ITile* tileInterface;
+
+		for (int32 i = 0; i < outHits.Num(); i++)
+		{
+			tileInterface = Cast<ITile>(outHits[i].Actor);
+
+			if (tileInterface != nullptr)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interacting with tile"));
+				InteractWithTile(outHits[i].Actor.Get());
+				break;
+			}
+		}
+
+	}
+}
+
 void ABaseDroid::CancelInteraction()
 {
+	//Re-enable movement
+	EnableMovement();
 }
 
 void ABaseDroid::OnRepairComplete_Implementation()
 {
 	//re-enable movement
-
+	EnableMovement();
 }
 
