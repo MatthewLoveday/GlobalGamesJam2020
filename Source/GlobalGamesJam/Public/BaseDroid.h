@@ -46,7 +46,7 @@ protected:
 	
 public:	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void InteractWithTile(UObject* tile);
+	void InteractWithTile(ATileBase* tile);
 
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

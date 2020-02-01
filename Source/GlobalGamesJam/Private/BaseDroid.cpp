@@ -90,19 +90,13 @@ void ABaseDroid::EnableMovement()
 	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }
 
-void ABaseDroid::InteractWithTile_Implementation(UObject* tile)
+void ABaseDroid::InteractWithTile_Implementation(ATileBase* tile)
 {
-	ATileBase* tileInterface = Cast<ATileBase>(tile);
-	if(tileInterface)
-	{
-		//Start Skillcheck
-
-		InSkillcheck = true;
-		
-		//Turn off movement
-		DisableMovement();
-	}
-
+	//Start Skillcheck
+	InSkillcheck = true;
+	
+	//Turn off movement
+	DisableMovement();
 }
 
 void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType, ATileBase* Tile)
@@ -185,7 +179,7 @@ void ABaseDroid::Interact_Implementation()
 			if (tileInterface != nullptr)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interacting with tile"));
-				InteractWithTile(outHits[i].Actor.Get());
+				InteractWithTile(tileInterface);
 				break;
 			}
 		}
