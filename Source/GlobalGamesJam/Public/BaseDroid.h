@@ -42,14 +42,12 @@ protected:
 
 	
 public:	
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void InteractWithTile(UObject* tile);
-	virtual void InteractWithTile_Implementation(UObject* tile);
 
 	
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnInteractionComplete(ERepairType repairType);
-	virtual void OnInteractionComplete_Implementation(ERepairType repairType);
 	
 	//Movement Functions
 	UFUNCTION()
@@ -70,7 +68,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Interact();
-	virtual void Interact_Implementation();
 
 	UFUNCTION(BlueprintCallable)
 	void CancelInteraction();

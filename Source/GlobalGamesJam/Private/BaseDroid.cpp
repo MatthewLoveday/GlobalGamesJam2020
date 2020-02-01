@@ -14,7 +14,8 @@
 #include "DroidPlayerController.h"
 #include "DrawDebugHelpers.h"
 #include "Engine.h"
-#include "Tile.h"
+#include "TileBase.h"
+
 
 // Sets default values
 ABaseDroid::ABaseDroid()
@@ -89,10 +90,10 @@ void ABaseDroid::EnableMovement()
 
 void ABaseDroid::InteractWithTile_Implementation(UObject* tile)
 {
-	ATile* tileInterface = Cast<ATile>(tile);
+	ATileBase* tileInterface = Cast<ATileBase>(tile);
 	if(tileInterface)
 	{
-		tileInterface->Repair(&ABaseDroid::OnInteractionComplete_Implementation, this);
+		tileInterface->Repair(&ABaseDroid::OnInteractionComplete, this);
 	}
 
 	//Turn off movement
@@ -153,16 +154,16 @@ void ABaseDroid::Interact_Implementation()
 	{
 		//outhits must have at least one member
 		//cast outhit to ITile
-		ATile* tileInterface;
+		ATileBase* tileInterface;
 
 		for (int32 i = 0; i < outHits.Num(); i++)
 		{
-			tileInterface = Cast<ATile>(outHits[i].Actor);
+			tileInterface = Cast<ATileBase>(outHits[i].Actor);
 
 			if (tileInterface != nullptr)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interacting with tile"));
-				InteractWithTile_Implementation(outHits[i].Actor.Get());
+				InteractWithTile(outHits[i].Actor.Get());
 				break;
 			}
 		}

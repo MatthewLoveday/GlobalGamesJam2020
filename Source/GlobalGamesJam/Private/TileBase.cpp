@@ -28,3 +28,31 @@ void ATileBase::Tick(float DeltaTime)
 
 }
 
+void ATileBase::Repair(DroidCallback onComplete, ABaseDroid* droid)
+{
+	if(m_RepairQueue.Num() != 0)
+	{
+		ERepairType type = m_RepairQueue[0];
+		m_RepairQueue.RemoveAt(0);
+		
+		(droid->* (onComplete))(type);
+
+		OnRepair(type);
+	}
+}
+
+void ATileBase::OnHover_Implementation()
+{
+	
+}
+
+bool ATileBase::NeedRepair_Implementation()
+{
+	return (m_RepairQueue.Num() != 0);
+}
+
+ERepairType ATileBase::GetCurrentRepairType_Implementation()
+{
+	return m_RepairQueue[0];
+}
+
