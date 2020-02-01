@@ -49,11 +49,17 @@ void ATileBase::RepairLayer()
 		OnRepair(m_RepairQueue[0]);
 		m_RepairQueue.RemoveAt(0);
 	}
+	isInRepair = false;
 }
 
 bool ATileBase::IsRepaired()
 {
 	return !NeedRepair();
+}
+
+void ATileBase::OnRepairFail()
+{
+	isInRepair = false;
 }
 
 void ATileBase::OnHover_Implementation()

@@ -42,6 +42,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<ERepairType> m_RepairQueue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isInRepair;
 	
 public:	
 	// Called every frame
@@ -71,9 +74,15 @@ public:
 
 	typedef void(ABaseDroid::* DroidCallback)(ERepairType);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		bool IsRepairInProgress() const { return isInRepair; }
+
 	UFUNCTION(BlueprintCallable)
 	void RepairLayer();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsRepaired();
+
+	UFUNCTION(BlueprintCallable)
+		void OnRepairFail();
 };
