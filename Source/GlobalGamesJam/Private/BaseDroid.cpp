@@ -105,7 +105,8 @@ void ABaseDroid::InteractWithTile_Implementation(ATileBase* tile)
 void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType, ATileBase* Tile)
 {
 	//do nothing
-
+	InSkillcheck = false;
+	
 	Tile->RepairLayer();
 }
 
@@ -203,5 +204,7 @@ void ABaseDroid::OnRepairComplete_Implementation()
 {
 	//re-enable movement
 	EnableMovement();
+
+	InSkillcheck = false;
 }
 
