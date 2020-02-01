@@ -8,37 +8,58 @@
 void ADroidPlayerController::MoveCharacterHorizontal(float value)
 {
 	//cast pawn
-	Cast<ABaseDroid>(GetPawn())->MoveHorizontal(value);
+	if(GetPawn())
+	{
+		Cast<ABaseDroid>(GetPawn())->MoveHorizontal(value);
+	}
 }
 
 void ADroidPlayerController::MoveCharacterVertical(float value)
 {
-	Cast<ABaseDroid>(GetPawn())->MoveVertical (value);
+	if (GetPawn())
+	{
+		Cast<ABaseDroid>(GetPawn())->MoveVertical(value);
+	}
 }
 
 void ADroidPlayerController::Interact()
 {
-	Cast<ABaseDroid>(GetPawn())->Interact();
+	if (GetPawn())
+	{
+		Cast<ABaseDroid>(GetPawn())->Interact();
+	}
 }
 
 void ADroidPlayerController::CancelInteract()
 {
-	Cast<ABaseDroid>(GetPawn())->CancelInteraction();
+	if (GetPawn())
+	{
+		Cast<ABaseDroid>(GetPawn())->CancelInteraction();
+	}
 }
 
 void ADroidPlayerController::Dash()
 {
-	Cast<ABaseDroid>(GetPawn())->Dash();
+	if (GetPawn())
+	{
+		Cast<ABaseDroid>(GetPawn())->Dash();
+	}
 }
 
 void ADroidPlayerController::SkillcheckDown()
 {
-	Cast<ABaseDroid>(GetPawn())->OnSkillcheckDown();
+	if (GetPawn())
+	{
+		Cast<ABaseDroid>(GetPawn())->OnSkillcheckDown();
+	}
 }
 
 void ADroidPlayerController::SkillcheckUp()
 {
-	Cast<ABaseDroid>(GetPawn())->OnSkillcheckUp();
+	if (GetPawn())
+	{
+		Cast<ABaseDroid>(GetPawn())->OnSkillcheckUp();
+	}
 }
 
 void ADroidPlayerController::SetupInputComponent()
