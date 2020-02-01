@@ -23,6 +23,19 @@ class GLOBALGAMESJAM_API ADroidPlayerController : public APlayerController
 
 	UFUNCTION(BlueprintCallable)
 	void Interact();
+
+	UFUNCTION(BlueprintCallable)
+	void CancelInteract();
+
+	UFUNCTION(BlueprintCallable)
+	void Dash();
+	
+	UFUNCTION(BlueprintCallable)
+	void SkillcheckDown();
+
+	UFUNCTION(BlueprintCallable)
+	void SkillcheckUp();
+	
 public:
 	virtual void SetupInputComponent() override;
 };

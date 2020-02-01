@@ -67,6 +67,8 @@ ABaseDroid::ABaseDroid()
 	DroidCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 	
 	interactCollisionBoxSize = FVector(50.0f, 50.0f, 100.0f);
+
+	InSkillcheck = false;
 }
 
 // Called when the game starts or when spawned
@@ -94,10 +96,13 @@ void ABaseDroid::InteractWithTile_Implementation(UObject* tile)
 	if(tileInterface)
 	{
 		tileInterface->Repair(&ABaseDroid::OnInteractionComplete, this);
+
+		InSkillcheck = true;
+		
+		//Turn off movement
+		DisableMovement();
 	}
 
-	//Turn off movement
-	DisableMovement();
 }
 
 void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType)
@@ -131,6 +136,21 @@ void ABaseDroid::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 
+}
+
+void ABaseDroid::Dash()
+{
+	
+}
+
+void ABaseDroid::OnSkillcheckDown()
+{
+	
+}
+
+void ABaseDroid::OnSkillcheckUp()
+{
+	
 }
 
 void ABaseDroid::Interact_Implementation()
@@ -171,10 +191,13 @@ void ABaseDroid::Interact_Implementation()
 	}
 }
 
-void ABaseDroid::CancelInteraction()
+void ABaseDroid::CancelInteraction_Implementation()
 {
 	//Re-enable movement
 	EnableMovement();
+
+	
+	InSkillcheck = false;
 }
 
 void ABaseDroid::OnRepairComplete_Implementation()

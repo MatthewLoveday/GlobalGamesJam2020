@@ -40,6 +40,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void EnableMovement();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool InSkillcheck;
 	
 public:	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -69,9 +71,18 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Interact();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void CancelInteraction();
 
+	UFUNCTION(BlueprintCallable)
+	void Dash();
+
+	UFUNCTION(BlueprintCallable)
+	void OnSkillcheckDown();
+
+	UFUNCTION(BlueprintCallable)
+	void OnSkillcheckUp();
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnRepairComplete();
 };

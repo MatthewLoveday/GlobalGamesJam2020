@@ -21,6 +21,26 @@ void ADroidPlayerController::Interact()
 	Cast<ABaseDroid>(GetPawn())->Interact();
 }
 
+void ADroidPlayerController::CancelInteract()
+{
+	Cast<ABaseDroid>(GetPawn())->CancelInteraction();
+}
+
+void ADroidPlayerController::Dash()
+{
+	Cast<ABaseDroid>(GetPawn())->Dash();
+}
+
+void ADroidPlayerController::SkillcheckDown()
+{
+	Cast<ABaseDroid>(GetPawn())->OnSkillcheckDown();
+}
+
+void ADroidPlayerController::SkillcheckUp()
+{
+	Cast<ABaseDroid>(GetPawn())->OnSkillcheckUp();
+}
+
 void ADroidPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -31,4 +51,9 @@ void ADroidPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("VerticalMove", this, &ADroidPlayerController::MoveCharacterVertical);
 
 	InputComponent->BindAction("Interact", IE_Pressed, this, &ADroidPlayerController::Interact);
+	InputComponent->BindAction("Cancel", IE_Pressed, this, &ADroidPlayerController::CancelInteract);
+
+	
+	InputComponent->BindAction("SkillCheck", IE_Pressed, this, &ADroidPlayerController::SkillcheckDown);
+	InputComponent->BindAction("SkillCheck", IE_Released, this, &ADroidPlayerController::SkillcheckUp);
 }
