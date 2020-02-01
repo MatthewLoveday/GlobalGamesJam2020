@@ -92,11 +92,14 @@ void ABaseDroid::EnableMovement()
 
 void ABaseDroid::InteractWithTile_Implementation(ATileBase* tile)
 {
-	//Start Skillcheck
-	InSkillcheck = true;
-	
-	//Turn off movement
-	DisableMovement();
+	if(tile->NeedRepair())
+	{		
+		//Start Skillcheck
+		InSkillcheck = true;
+		
+		//Turn off movement
+		DisableMovement();
+	}
 }
 
 void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType, ATileBase* Tile)

@@ -51,6 +51,11 @@ void ATileBase::RepairLayer()
 	}
 }
 
+bool ATileBase::IsRepaired()
+{
+	return !NeedRepair();
+}
+
 void ATileBase::OnHover_Implementation()
 {
 	
@@ -63,6 +68,13 @@ bool ATileBase::NeedRepair_Implementation()
 
 ERepairType ATileBase::GetCurrentRepairType_Implementation()
 {
-	return m_RepairQueue[0];
+	if(m_RepairQueue.Num() > 0)
+	{
+		return m_RepairQueue[0];
+	}
+	else
+	{
+		return ERepairType::None;
+	}
 }
 

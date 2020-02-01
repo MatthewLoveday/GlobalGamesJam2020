@@ -60,7 +60,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	ERepairType GetCurrentRepairType();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, BlueprintPure)
 	bool NeedRepair();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -73,4 +73,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RepairLayer();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsRepaired();
 };

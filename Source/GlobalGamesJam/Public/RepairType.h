@@ -9,4 +9,5 @@ enum class ERepairType : uint8
 	FixWiring 		UMETA(DisplayName = "Fix Wiring"),
 	RevealPanel 	UMETA(DisplayName = "Reveal Panel"),
 	SealPanel		UMETA(DisplayName = "Seal Panel"),
+	None UMETA(DisplayName = "None")
 };
