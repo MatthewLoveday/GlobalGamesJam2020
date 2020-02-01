@@ -70,6 +70,7 @@ public:
 	void OnRepair(ERepairType old);
 
 	typedef void(ABaseDroid::* DroidCallback)(ERepairType);
-	
+
+	UFUNCTION(BlueprintCallable)
 	void RepairLayer();
 };
