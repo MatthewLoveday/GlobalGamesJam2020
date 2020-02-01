@@ -77,10 +77,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Dash();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnSkillcheckDown();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnSkillcheckUp();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

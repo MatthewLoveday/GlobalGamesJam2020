@@ -143,12 +143,12 @@ void ABaseDroid::Dash()
 	
 }
 
-void ABaseDroid::OnSkillcheckDown()
+void ABaseDroid::OnSkillcheckDown_Implementation()
 {
 	
 }
 
-void ABaseDroid::OnSkillcheckUp()
+void ABaseDroid::OnSkillcheckUp_Implementation()
 {
 	
 }
