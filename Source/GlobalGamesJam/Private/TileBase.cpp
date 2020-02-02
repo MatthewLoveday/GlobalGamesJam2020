@@ -74,11 +74,15 @@ void ATileBase::RepairLayer()
 
 		UpdateMeshAccordingToCurrentRepairType();
 	}
+	else
+	{
+		//Increment Global Broken Count
+		AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
+		gameMode->BrokenTileCount--;
+	}
 	
 	isInRepair = false;
-	//Increment Global Broken Count
-	AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
-	gameMode->BrokenTileCount--;
+
 }
 
 bool ATileBase::IsRepaired()
