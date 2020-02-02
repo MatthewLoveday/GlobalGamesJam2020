@@ -115,4 +115,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool CanDoRepairType(ERepairType type);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SendInteractToDisplay();
 };

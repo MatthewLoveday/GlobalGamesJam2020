@@ -368,6 +368,11 @@ void ABaseDroid::Tick(float DeltaTime)
 			hoveredTile = nullptr;
 		}
 	}
+
+	if (hoveredPickup != nullptr || hoveredTile != nullptr)
+	{
+		this->SendInteractToDisplay();
+	}
 }
 
 // Called to bind functionality to input
@@ -567,3 +572,7 @@ void ABaseDroid::OnRepairComplete_Implementation()
 	InSkillcheck = false;
 }
 
+void SendInteractToDisplay()
+{
+	//Child Implemented
+}
