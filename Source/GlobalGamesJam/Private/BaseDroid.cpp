@@ -175,7 +175,7 @@ void ABaseDroid::Tick(float DeltaTime)
 	//Handle Hover Mechanic
 	//Collision Boundaries
 	FVector boxSize = FVector(50.0f, 50.0f, 100.0f);
-	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
+	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 50.0f);
 
 	FCollisionShape interactableDetector = FCollisionShape::MakeBox(boxSize);
 
@@ -183,7 +183,7 @@ void ABaseDroid::Tick(float DeltaTime)
 	
 	bool hit = GetWorld()->SweepMultiByChannel(outHits,
 		boxPos,
-		boxPos + GetActorForwardVector(),
+		boxPos + (GetActorForwardVector() * 50.0f),
 		FQuat::Identity,
 		ECC_GameTraceChannel1,
 		interactableDetector);
@@ -193,7 +193,7 @@ void ABaseDroid::Tick(float DeltaTime)
 	{
 		hit = GetWorld()->SweepMultiByChannel(outHits,
 			boxPos,
-			boxPos + GetActorForwardVector(),
+			boxPos + GetActorForwardVector() * 50.0f,
 			FQuat::Identity,
 			ECC_GameTraceChannel3,
 			interactableDetector);
@@ -269,7 +269,7 @@ void ABaseDroid::Tick(float DeltaTime)
 	}
 
 
-
+	boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
 
 	
 	
@@ -420,7 +420,7 @@ void ABaseDroid::Interact_Implementation()
 
 	//Collision Boundaries
 	FVector boxSize = FVector(50.0f, 50.0f, 100.0f);
-	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
+	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 50.0f);
 
 	FCollisionShape interactableDetector = FCollisionShape::MakeBox(boxSize);
 
@@ -433,7 +433,7 @@ void ABaseDroid::Interact_Implementation()
 	{
 		hit = GetWorld()->SweepMultiByChannel(outHits,
 			boxPos,
-			boxPos + GetActorForwardVector(),
+			boxPos + (GetActorForwardVector() * 50.0f),
 			FQuat::Identity,
 			ECC_GameTraceChannel3,
 			interactableDetector);
@@ -480,9 +480,11 @@ void ABaseDroid::Interact_Implementation()
 	//otherwise detect for repairable object
 	//Detect interactable objects
 
+	boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
+	
 	hit = GetWorld()->SweepMultiByChannel(outHits,
 		boxPos,
-		boxPos + GetActorForwardVector(),
+		boxPos + (GetActorForwardVector()),
 		FQuat::Identity,
 		ECC_GameTraceChannel1,
 		interactableDetector);
