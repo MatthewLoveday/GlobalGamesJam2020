@@ -98,6 +98,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<ERepairType> GetRepairQueue();
 
+	UFUNCTION(BlueprintCallable)
+	bool HasRepairWhichLeaksOxygen();
 
 	UFUNCTION(BlueprintCallable)
 	void BeginHover();

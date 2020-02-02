@@ -24,9 +24,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<class ATileBase*> RepairQueue;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<ATileBase*> GlobalTileList;
+
+	UFUNCTION(BlueprintCallable)
+	ATileBase* GetRandomTile();
+	
 	UFUNCTION(BlueprintCallable)
 	void RegisterBuildTask(ATileBase* newBuildTask);
 
+	UFUNCTION(BlueprintCallable)
+	void RegisterTile(ATileBase* newTile);
+	
 	UFUNCTION(BlueprintCallable)
 	void HandleEvent(EGameEvent gameEvent);
 

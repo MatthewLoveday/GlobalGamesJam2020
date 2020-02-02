@@ -8,12 +8,27 @@
 #include "TileBase.h"
 #include "Math/UnrealMathUtility.h"
 
+ATileBase* AGlobalGamesJamGameModeBase::GetRandomTile()
+{
+	if(GlobalTileList.Num() == 0)
+	{
+		return nullptr;
+	}
+
+	return GlobalTileList[FMath::RandRange(0, GlobalTileList.Num() - 1)];
+}
+
 void AGlobalGamesJamGameModeBase::RegisterBuildTask(ATileBase* newBuildTask)
 {
 	if(newBuildTask->NeedRepair())
 	{
 		RepairQueue.Emplace(newBuildTask);
 	}
+}
+
+void AGlobalGamesJamGameModeBase::RegisterTile(ATileBase* newTile)
+{
+	GlobalTileList.Add(newTile);
 }
 
 void AGlobalGamesJamGameModeBase::HandleEvent(EGameEvent gameEvent)

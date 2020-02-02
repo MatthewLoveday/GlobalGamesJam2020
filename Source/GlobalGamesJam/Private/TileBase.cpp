@@ -23,9 +23,11 @@ ATileBase::ATileBase()
 void ATileBase::BeginPlay()
 {
 	Super::BeginPlay();
+	AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
+	gameMode->RegisterTile(this);
+	
 	if (m_RepairQueue.Num() > 0)
 	{
-		AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
 		gameMode->RegisterBuildTask(this);
 	}
 }
@@ -102,6 +104,20 @@ void ATileBase::QueueRepairs(TArray<ERepairType> repairs)
 TArray<ERepairType> ATileBase::GetRepairQueue()
 {
 	return m_RepairQueue;
+}
+
+bool ATileBase::HasRepairWhichLeaksOxygen()
+{
+	for(int i = 0; i < m_RepairQueue.Num(); i++)
+	{
+		//todo add more repair types
+		if(m_RepairQueue[i] == ERepairType::SealBreach)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void ATileBase::BeginHover()
