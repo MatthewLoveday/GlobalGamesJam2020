@@ -85,6 +85,7 @@ ABaseDroid::ABaseDroid()
 
 	hoveredPickup = nullptr;
 	hoveredTile = nullptr;
+	tileInFrontRegardlessOfValidity = nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -168,7 +169,7 @@ void ABaseDroid::Tick(float DeltaTime)
 		CarriedItem->SetActorRotation(GetActorForwardVector().ToOrientationRotator());
 	}
 
-
+	tileInFrontRegardlessOfValidity = nullptr;
 
 
 	//Handle Hover Mechanic
@@ -269,7 +270,7 @@ void ABaseDroid::Tick(float DeltaTime)
 
 
 
-
+	
 	
 	//Search for tiles instead
 	hit = GetWorld()->SweepMultiByChannel(outHits,
@@ -292,6 +293,8 @@ void ABaseDroid::Tick(float DeltaTime)
 
 			if (tileInterface != nullptr)
 			{
+				tileInFrontRegardlessOfValidity = tileInterface;
+				
 				successfulHit = true;
 				
 				if (tileInterface->IsRepairInProgress())
@@ -353,6 +356,7 @@ void ABaseDroid::Tick(float DeltaTime)
 		{
 			hoveredTile->EndHover();
 			hoveredTile = nullptr;
+			tileInFrontRegardlessOfValidity = nullptr;
 		}
 	}
 	else
@@ -364,7 +368,6 @@ void ABaseDroid::Tick(float DeltaTime)
 			hoveredTile = nullptr;
 		}
 	}
-	
 }
 
 // Called to bind functionality to input
@@ -378,6 +381,19 @@ void ABaseDroid::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void ABaseDroid::Dash()
 {
 	
+}
+
+bool ABaseDroid::CanDoRepairType(ERepairType type)
+{
+	for(int i = 0; i< AchievableRepairs.Num(); i++)
+	{
+		if(type == AchievableRepairs[i])
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void ABaseDroid::OnSkillcheckDown_Implementation()

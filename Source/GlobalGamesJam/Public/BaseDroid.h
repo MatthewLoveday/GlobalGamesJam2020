@@ -65,6 +65,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ATileBase* hoveredTile;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ATileBase* tileInFrontRegardlessOfValidity;
 	
 public:	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -108,4 +112,7 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnRepairComplete();
+
+	UFUNCTION(BlueprintCallable)
+	bool CanDoRepairType(ERepairType type);
 };
