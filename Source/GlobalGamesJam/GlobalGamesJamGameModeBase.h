@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-
+#include "GameEvent.h"
 #include "GlobalGamesJamGameModeBase.generated.h"
 
 /**
@@ -14,6 +14,10 @@ UCLASS()
 class GLOBALGAMESJAM_API AGlobalGamesJamGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EGameEvent currentGameEvent;
 	
 public:
 
@@ -22,6 +26,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RegisterBuildTask(ATileBase* newBuildTask);
+
+	UFUNCTION(BlueprintCallable)
+	void HandleEvent(EGameEvent gameEvent);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void DoGameEvent(EGameEvent current);
+
+	UFUNCTION(BlueprintCallable)
+	EGameEvent GetRandomGameEvent();
 	
 	AGlobalGamesJamGameModeBase();
 };
