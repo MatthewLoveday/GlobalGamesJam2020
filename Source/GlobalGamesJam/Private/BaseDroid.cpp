@@ -140,6 +140,7 @@ void ABaseDroid::Tick(float DeltaTime)
 	if(CarriedItem != nullptr)
 	{
 		//Set position to hands position
+		CarriedItem->SetActorLocation(HandPosition->GetComponentLocation());
 	}
 }
 
@@ -166,14 +167,19 @@ void ABaseDroid::OnSkillcheckUp_Implementation()
 	
 }
 
+bool DoesRepairTypeAcceptItem(ERepairType type)
+{
+	return type == ERepairType::AddBattery;
+}
+
 void ABaseDroid::Interact_Implementation()
 {
 	if(InSkillcheck)
 	{
 		return;
 	}
-	
-	//Detect interactable objects
+
+	//Collision Boundaries
 	FVector boxSize = FVector(50.0f, 50.0f, 100.0f);
 	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
 
@@ -181,7 +187,42 @@ void ABaseDroid::Interact_Implementation()
 
 	TArray<FHitResult> outHits;
 
-	bool hit = GetWorld()->SweepMultiByChannel(outHits,
+	bool hit = false;
+
+	//Detect for carried items if we aren't already carrying an item
+	if(CarriedItem == nullptr)
+	{
+		hit = GetWorld()->SweepMultiByChannel(outHits,
+			boxPos,
+			boxPos + GetActorForwardVector(),
+			FQuat::Identity,
+			ECC_GameTraceChannel3,
+			interactableDetector);
+
+		if(hit)
+		{
+			APickupActor* pickup;
+
+			for (int32 i = 0; i < outHits.Num(); i++)
+			{
+				pickup = Cast<APickupActor>(outHits[i].Actor);
+
+				if (pickup != nullptr)
+				{
+					CarriedItem = pickup;
+					pickup->IsBeingCarried = true;
+					break;
+				}
+			}
+			
+			return;
+		}
+	}
+
+	//otherwise detect for repairable object
+	//Detect interactable objects
+
+	hit = GetWorld()->SweepMultiByChannel(outHits,
 		boxPos,
 		boxPos + GetActorForwardVector(),
 		FQuat::Identity,
@@ -200,13 +241,53 @@ void ABaseDroid::Interact_Implementation()
 
 			if (tileInterface != nullptr)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interacting with tile"));
-				InteractWithTile(tileInterface);
+				if(tileInterface->IsRepairInProgress())
+				{
+					continue;
+				}
+				
+				//if the tile has a repair function which uses the item
+				if(CarriedItem != nullptr)
+				{
+					if (DoesRepairTypeAcceptItem(tileInterface->GetCurrentRepairType()))
+					{
+						//does the item type match?
+						if (tileInterface->GetCurrentRepairType() == CarriedItem->MapItemTypeToRepairFunction(CarriedItem->ItemType))
+						{
+							tileInterface->RepairLayer();
+							CarriedItem->Destroy();
+							CarriedItem = nullptr;
+							return;
+						}
+					}
+				}
+				else if(!DoesRepairTypeAcceptItem(tileInterface->GetCurrentRepairType()))
+				{
+					//otherwise it's a skill check
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interacting with tile"));
+					InteractWithTile(tileInterface);
+				}
+				else
+				{
+					
+				}
 				break;
 			}
 		}
 
 	}
+	else
+	{
+		//if carrying an item, drop it
+		if (CarriedItem != nullptr)
+		{
+			CarriedItem->DropObject();
+			CarriedItem = nullptr;
+			return;
+		}
+	}
+
+	//THIS CODE PATH IS NEVER HIT IF AN ITEM WAS USED TO REPAIR A TILE
 }
 
 void ABaseDroid::CancelInteraction_Implementation()

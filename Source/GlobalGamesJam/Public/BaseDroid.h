@@ -6,6 +6,7 @@
 #include "RepairType.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "PickupActor.h"
 #include "BaseDroid.generated.h"
 
 class ATileBase;
@@ -48,7 +49,7 @@ protected:
 	bool InSkillcheck;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	AActor* CarriedItem;
+	APickupActor* CarriedItem;
 	
 public:	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
