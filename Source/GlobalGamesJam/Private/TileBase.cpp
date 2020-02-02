@@ -142,6 +142,21 @@ void ATileBase::EndHover()
 	staticMesh->SetRenderCustomDepth(false);
 }
 
+void ATileBase::AddDefaultRepairsAndRegenMesh()
+{
+	AddDefaultRepairsToQueue();
+	UpdateMeshAccordingToCurrentRepairType();
+}
+
+void ATileBase::AddDefaultRepairsToQueue()
+{
+	//empty the repair queue
+	m_RepairQueue.Empty();
+
+	//Fill it with new ones
+	m_RepairQueue = defaultRepairQueue;
+}
+
 void ATileBase::OnHover_Implementation()
 {
 	

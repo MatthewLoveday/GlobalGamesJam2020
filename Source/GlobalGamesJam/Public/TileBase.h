@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<ERepairType> m_RepairQueue;
 
+	UPROPERTY(EditAnywhere)
+	TArray<ERepairType> defaultRepairQueue;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool isInRepair;
 	
@@ -108,4 +111,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EndHover();
+
+	UFUNCTION(BlueprintCallable)
+	void AddDefaultRepairsToQueue();
+
+	UFUNCTION(BlueprintCallable)
+	void AddDefaultRepairsAndRegenMesh();
 };
