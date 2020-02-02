@@ -3,6 +3,8 @@
 
 #include "PickupActor.h"
 
+#include "Components/StaticMeshComponent.h"
+
 // Sets default values
 APickupActor::APickupActor()
 {
@@ -10,6 +12,10 @@ APickupActor::APickupActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 	IsBeingCarried = false;
+
+	SM = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SM"));
+	SM->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	SM->SetCollisionProfileName(TEXT("Pickup"));
 }
 
 // Called when the game starts or when spawned
@@ -49,4 +55,14 @@ ERepairType APickupActor::MapItemTypeToRepairFunction(EItemType type)
 	}
 
 	return ERepairType::None;
+}
+
+void APickupActor::BeginHover_Implementation()
+{
+	SM->SetRenderCustomDepth(true);
+}
+
+void APickupActor::EndHover_Implementation()
+{
+	SM->SetRenderCustomDepth(false);
 }

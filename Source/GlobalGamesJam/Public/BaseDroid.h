@@ -23,10 +23,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<ERepairType>	AchievableRepairs;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* DroidMesh;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCameraComponent* DroidCamera;
 
 	UPROPERTY(VisibleAnywhere)
@@ -59,6 +59,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	bool CanDroidDoRepair(ERepairType repairType);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	APickupActor* hoveredPickup;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ATileBase* hoveredTile;
 	
 public:	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

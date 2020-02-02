@@ -18,6 +18,11 @@
 #include "Human.h"
 
 
+bool DoesRepairTypeAcceptItem(ERepairType type)
+{
+	return type == ERepairType::AddBattery;
+}
+
 // Sets default values
 ABaseDroid::ABaseDroid()
 {
@@ -77,6 +82,9 @@ ABaseDroid::ABaseDroid()
 	interactCollisionBoxSize = FVector(50.0f, 50.0f, 100.0f);
 	
 	InSkillcheck = false;
+
+	hoveredPickup = nullptr;
+	hoveredTile = nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -159,6 +167,204 @@ void ABaseDroid::Tick(float DeltaTime)
 		//Set carried rotator
 		CarriedItem->SetActorRotation(GetActorForwardVector().ToOrientationRotator());
 	}
+
+
+
+
+	//Handle Hover Mechanic
+	//Collision Boundaries
+	FVector boxSize = FVector(50.0f, 50.0f, 100.0f);
+	FVector boxPos = GetActorLocation() + (GetActorForwardVector() * 100.0f);
+
+	FCollisionShape interactableDetector = FCollisionShape::MakeBox(boxSize);
+
+	TArray<FHitResult> outHits;
+	
+	bool hit = GetWorld()->SweepMultiByChannel(outHits,
+		boxPos,
+		boxPos + GetActorForwardVector(),
+		FQuat::Identity,
+		ECC_GameTraceChannel1,
+		interactableDetector);
+
+	//Detect for carried items if we aren't already carrying an item
+	if (CarriedItem == nullptr && HasPickupAbility)
+	{
+		hit = GetWorld()->SweepMultiByChannel(outHits,
+			boxPos,
+			boxPos + GetActorForwardVector(),
+			FQuat::Identity,
+			ECC_GameTraceChannel3,
+			interactableDetector);
+
+		if (hit)
+		{
+			APickupActor* pickup = nullptr;
+			bool successfulHit = false;
+			
+			for (int32 i = 0; i < outHits.Num(); i++)
+			{
+				pickup = Cast<APickupActor>(outHits[i].Actor);
+
+				if (pickup != nullptr)
+				{
+					if (Cast<AHuman>(pickup) != nullptr)
+					{
+						//if human and you can't pick up humans then ignore this
+
+						if (!CanOnlyPickUpHuman)
+						{
+							continue;
+						}
+					}
+					else
+					{
+						//not a human but is a valid pickup
+						if (CanOnlyPickUpHuman)
+						{
+							//ignore regular pickup
+							continue;
+						}
+					}
+
+					//Highlight Carried Item
+					
+					if(pickup != hoveredPickup)
+					{
+						if(hoveredPickup != nullptr)
+						{						
+							hoveredPickup->EndHover();
+						}
+						
+						hoveredPickup = pickup;
+						hoveredPickup->BeginHover();
+					}
+					
+					successfulHit = true;
+					break;
+				}
+			}
+
+			if(!successfulHit && hoveredPickup != nullptr)
+			{
+				hoveredPickup->EndHover();
+				hoveredPickup = nullptr;
+			}
+			
+			return;
+		}
+		else
+		{
+			if (hoveredPickup != nullptr)
+			{
+				hoveredPickup->EndHover();
+				hoveredPickup = nullptr;
+			}
+		}
+
+		
+		
+	}
+
+
+
+
+
+	
+	//Search for tiles instead
+	hit = GetWorld()->SweepMultiByChannel(outHits,
+		boxPos,
+		boxPos + GetActorForwardVector(),
+		FQuat::Identity,
+		ECC_GameTraceChannel1,
+		interactableDetector);
+
+	if (hit)
+	{
+		//outhits must have at least one member
+		//cast outhit to ITile
+		ATileBase* tileInterface;
+		bool successfulHit = false;
+		
+		for (int32 i = 0; i < outHits.Num(); i++)
+		{
+			tileInterface = Cast<ATileBase>(outHits[i].Actor);
+
+			if (tileInterface != nullptr)
+			{
+				successfulHit = true;
+				
+				if (tileInterface->IsRepairInProgress())
+				{
+					continue;
+				}
+
+				//if the tile has a repair function which uses the item
+				if (CarriedItem != nullptr)
+				{
+					if (DoesRepairTypeAcceptItem(tileInterface->GetCurrentRepairType()))
+					{
+						//does the item type match?
+						if (tileInterface->GetCurrentRepairType() == CarriedItem->MapItemTypeToRepairFunction(CarriedItem->ItemType))
+						{
+							//enable hover
+							if (tileInterface != hoveredTile)
+							{
+								if (hoveredTile != nullptr)
+								{
+									hoveredTile->EndHover();
+								}
+
+								hoveredTile = tileInterface;
+								hoveredTile->BeginHover();
+							}
+							return;
+						}
+					}
+				}
+				else if (!DoesRepairTypeAcceptItem(tileInterface->GetCurrentRepairType()))
+				{
+					//if the repair is achievable by this droid
+					if (CanDroidDoRepair(tileInterface->GetCurrentRepairType()))
+					{
+						//hover enable
+						if (tileInterface != hoveredTile)
+						{
+							if (hoveredTile != nullptr)
+							{
+								hoveredTile->EndHover();
+							}
+
+							hoveredTile = tileInterface;
+							hoveredTile->BeginHover();
+						}
+
+					}
+				}
+				else
+				{
+
+				}
+				break;
+			}
+		}
+
+		if (!successfulHit && hoveredTile != nullptr)
+		{
+			hoveredTile->EndHover();
+			hoveredTile = nullptr;
+		}
+	}
+	else
+	{
+		//if carrying an item, drop it
+		if (hoveredTile != nullptr)
+		{
+			hoveredTile->EndHover();
+			hoveredTile = nullptr;
+		}
+	}
+	
 }
 
 // Called to bind functionality to input
@@ -184,10 +390,7 @@ void ABaseDroid::OnSkillcheckUp_Implementation()
 	
 }
 
-bool DoesRepairTypeAcceptItem(ERepairType type)
-{
-	return type == ERepairType::AddBattery;
-}
+
 
 void ABaseDroid::Interact_Implementation()
 {

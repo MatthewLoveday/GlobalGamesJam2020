@@ -97,4 +97,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	TArray<ERepairType> GetRepairQueue();
+
+
+	UFUNCTION(BlueprintCallable)
+	void BeginHover();
+
+	UFUNCTION(BlueprintCallable)
+	void EndHover();
 };

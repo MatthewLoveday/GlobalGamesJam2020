@@ -31,6 +31,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	EItemType ItemType;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* SM;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -49,5 +52,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	ERepairType MapItemTypeToRepairFunction(EItemType type);
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void BeginHover();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void EndHover();
 };

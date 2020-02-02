@@ -104,6 +104,16 @@ TArray<ERepairType> ATileBase::GetRepairQueue()
 	return m_RepairQueue;
 }
 
+void ATileBase::BeginHover()
+{
+	staticMesh->SetRenderCustomDepth(true);
+}
+
+void ATileBase::EndHover()
+{
+	staticMesh->SetRenderCustomDepth(false);
+}
+
 void ATileBase::OnHover_Implementation()
 {
 	
