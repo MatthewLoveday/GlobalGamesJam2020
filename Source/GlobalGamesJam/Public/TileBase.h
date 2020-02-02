@@ -72,7 +72,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnHover();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnRepair(ERepairType old);
 
 	typedef void(ABaseDroid::* DroidCallback)(ERepairType);

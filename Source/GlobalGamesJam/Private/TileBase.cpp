@@ -53,6 +53,14 @@ FRepairData ATileBase::SearchArrayForRepairType(ERepairType type)
 	return FRepairData();
 }
 
+void ATileBase::OnRepair_Implementation(ERepairType old)
+{
+	if(NeedRepair())
+	{
+		isInRepair = false;
+	}
+}
+
 void ATileBase::RepairLayer()
 {
 	if(m_RepairQueue.Num() != 0)
