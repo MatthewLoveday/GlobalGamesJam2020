@@ -28,6 +28,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* DroidCamera;
 
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* HandPosition;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class USpringArmComponent* CameraBoom;
 
@@ -43,6 +46,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool InSkillcheck;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AActor* CarriedItem;
 	
 public:	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

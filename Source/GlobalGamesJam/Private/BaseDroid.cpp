@@ -51,8 +51,15 @@ ABaseDroid::ABaseDroid()
 	//Add new static mesh component
 	DroidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Droid Mesh"));
 	DroidMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	
+	DroidMesh->SetRelativeScale3D(FVector(2.5, 2.5, 2.5));
+	DroidMesh->SetRelativeRotation(FRotator(0, -90, 0));
+	DroidMesh->SetRelativeLocation(FVector(0, 0, -20));
 
+	HandPosition = CreateDefaultSubobject<USceneComponent>(TEXT("Hand Position"));
+	HandPosition->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	HandPosition->SetRelativeLocation(FVector(40, 0, -10));
+
+	
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bAbsoluteRotation = true; // Don't want arm to rotate when character does
@@ -128,6 +135,12 @@ void ABaseDroid::MoveVertical(float value)
 void ABaseDroid::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//if picked item isn't nullptr
+	if(CarriedItem != nullptr)
+	{
+		//Set position to hands position
+	}
 }
 
 // Called to bind functionality to input
