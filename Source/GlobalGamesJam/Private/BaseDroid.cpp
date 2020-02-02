@@ -20,7 +20,7 @@
 
 bool DoesRepairTypeAcceptItem(ERepairType type)
 {
-	return type == ERepairType::AddBattery;
+	return type == ERepairType::AddBattery || type == ERepairType::AddFuse;
 }
 
 // Sets default values

@@ -11,6 +11,7 @@ UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class EItemType : uint8
 {
 	Battery 		UMETA(DisplayName = "Battery"),
+	Fuse 		UMETA(DisplayName = "Fuse"),
 	InvalidItem		UMETA(DisplayName = "ERROR INVALID ITEM")
 };
 
@@ -26,10 +27,10 @@ public:
 	// Sets default values for this actor's properties
 	APickupActor();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsBeingCarried;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EItemType ItemType;
 
 	UPROPERTY(VisibleAnywhere)

@@ -48,6 +48,10 @@ ERepairType APickupActor::MapItemTypeToRepairFunction(EItemType type)
 		return ERepairType::AddBattery;
 		break;
 
+	case EItemType::Fuse:
+		return ERepairType::AddFuse;
+		break;
+
 	case EItemType::InvalidItem:
 	default:
 		return ERepairType::None;

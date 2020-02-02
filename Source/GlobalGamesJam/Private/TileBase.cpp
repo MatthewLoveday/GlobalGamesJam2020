@@ -17,6 +17,8 @@ ATileBase::ATileBase()
 		UpdateMeshAccordingToCurrentRepairType();
 		
 	}
+
+	staticMesh->SetCollisionProfileName(TEXT("Interactable"));
 }
 
 // Called when the game starts or when spawned

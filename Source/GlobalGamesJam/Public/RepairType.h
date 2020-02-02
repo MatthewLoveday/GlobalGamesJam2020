@@ -10,7 +10,9 @@ enum class ERepairType : uint8
 	RevealPanel 	UMETA(DisplayName = "Reveal Panel"),
 	SealPanel		UMETA(DisplayName = "Seal Panel"),
 	AddBattery		UMETA(DisplayName = "Add Battery"),
+	AddFuse		UMETA(DisplayName = "Add Fuse"),
 	SealBreach		UMETA(DisplayName = "Fix Breach"),
+	Extinguish		UMETA(DisplayName = "Extinguish"),
 	None UMETA(DisplayName = "None")
 };
 
