@@ -28,6 +28,7 @@ void ATileBase::BeginPlay()
 	
 	if (m_RepairQueue.Num() > 0)
 	{
+		UpdateMeshAccordingToCurrentRepairType();
 		gameMode->RegisterBuildTask(this);
 	}
 }
