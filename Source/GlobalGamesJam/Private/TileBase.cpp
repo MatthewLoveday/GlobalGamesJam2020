@@ -2,7 +2,7 @@
 
 
 #include "TileBase.h"
-
+#include "GlobalGamesJamGameModeBase.h"
 // Sets default values
 ATileBase::ATileBase()
 {
@@ -12,13 +12,22 @@ ATileBase::ATileBase()
 	staticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	staticMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+	if(m_RepairQueue.Num() > 0)
+	{
+		UpdateMeshAccordingToCurrentRepairType();
+		
+	}
 }
 
 // Called when the game starts or when spawned
 void ATileBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	if (m_RepairQueue.Num() > 0)
+	{
+		AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
+		gameMode->RegisterBuildTask(this);
+	}
 }
 
 // Called every frame
@@ -48,7 +57,10 @@ void ATileBase::RepairLayer()
 	{
 		OnRepair(m_RepairQueue[0]);
 		m_RepairQueue.RemoveAt(0);
+
+		UpdateMeshAccordingToCurrentRepairType();
 	}
+	
 	isInRepair = false;
 }
 
@@ -60,6 +72,36 @@ bool ATileBase::IsRepaired()
 void ATileBase::OnRepairFail()
 {
 	isInRepair = false;
+}
+
+void ATileBase::UpdateMeshAccordingToCurrentRepairType()
+{
+	if(m_RepairQueue.Num() > 0)
+	{
+		FRepairData data = SearchArrayForRepairType(m_RepairQueue[0]);
+
+		if(data.mesh != nullptr)
+		{
+			staticMesh->SetStaticMesh(data.mesh);
+		}
+	}
+	else
+	{
+		if(DefaultRepairedMesh != nullptr)
+		{
+			staticMesh->SetStaticMesh(DefaultRepairedMesh);
+		}
+	}
+}
+
+void ATileBase::QueueRepairs(TArray<ERepairType> repairs)
+{
+	m_RepairQueue = repairs;
+}
+
+TArray<ERepairType> ATileBase::GetRepairQueue()
+{
+	return m_RepairQueue;
 }
 
 void ATileBase::OnHover_Implementation()

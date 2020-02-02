@@ -117,6 +117,19 @@ void ABaseDroid::OnInteractionComplete_Implementation(ERepairType repairType, AT
 	Tile->RepairLayer();
 }
 
+bool ABaseDroid::CanDroidDoRepair(ERepairType repairType)
+{
+	for (int i = 0; i < AchievableRepairs.Num(); ++i)
+	{
+		if(repairType == AchievableRepairs[i])
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void ABaseDroid::MoveHorizontal(float value)
 {
 	//Move Horizontally in the world direction
@@ -190,7 +203,7 @@ void ABaseDroid::Interact_Implementation()
 	bool hit = false;
 
 	//Detect for carried items if we aren't already carrying an item
-	if(CarriedItem == nullptr)
+	if(CarriedItem == nullptr && HasPickupAbility)
 	{
 		hit = GetWorld()->SweepMultiByChannel(outHits,
 			boxPos,
@@ -265,7 +278,12 @@ void ABaseDroid::Interact_Implementation()
 				{
 					//otherwise it's a skill check
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interacting with tile"));
-					InteractWithTile(tileInterface);
+
+					//if the repair is achievable by this droid
+					if(CanDroidDoRepair(tileInterface->GetCurrentRepairType()))
+					{
+						InteractWithTile(tileInterface);
+					}
 				}
 				else
 				{

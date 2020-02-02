@@ -5,6 +5,15 @@
 
 #include "DroidPlayerController.h"
 #include "BaseDroid.h"
+#include "TileBase.h"
+
+void AGlobalGamesJamGameModeBase::RegisterBuildTask(ATileBase* newBuildTask)
+{
+	if(newBuildTask->NeedRepair())
+	{
+		RepairQueue.Emplace(newBuildTask);
+	}
+}
 
 AGlobalGamesJamGameModeBase::AGlobalGamesJamGameModeBase()
 {
@@ -12,9 +21,7 @@ AGlobalGamesJamGameModeBase::AGlobalGamesJamGameModeBase()
 	PlayerControllerClass = ADroidPlayerController::StaticClass();
 
 	// set default pawn class to our Blueprinted character
-	//static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/TopDownCharacter"));
-	//if (PlayerPawnBPClass.Class != NULL)
-	//{
-		DefaultPawnClass = ABaseDroid::StaticClass();
-	//}
+	DefaultPawnClass = ABaseDroid::StaticClass();
+
+	RepairQueue = TArray<ATileBase*>();
 }

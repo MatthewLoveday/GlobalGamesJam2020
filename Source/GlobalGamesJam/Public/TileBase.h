@@ -54,6 +54,9 @@ public:
 	UStaticMeshComponent* staticMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMesh* DefaultRepairedMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FRepairData> m_MeshToRepairType;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -85,4 +88,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void OnRepairFail();
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateMeshAccordingToCurrentRepairType();
+
+	UFUNCTION(BlueprintCallable)
+	void QueueRepairs(TArray<ERepairType> repairs);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<ERepairType> GetRepairQueue();
 };

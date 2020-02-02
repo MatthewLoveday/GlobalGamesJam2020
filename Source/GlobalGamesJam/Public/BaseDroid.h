@@ -50,6 +50,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APickupActor* CarriedItem;
+
+	UPROPERTY(EditAnywhere)
+	bool HasPickupAbility;
+
+	UFUNCTION(BlueprintCallable)
+	bool CanDroidDoRepair(ERepairType repairType);
 	
 public:	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
