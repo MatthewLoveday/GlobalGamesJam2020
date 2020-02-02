@@ -35,7 +35,7 @@ protected:
 	TArray<AOxygenVolume*> NeighbouringOxygenVolumes;
 
 	UFUNCTION(BlueprintCallable)
-	void BalanceOxygenWithNeighbours();
+	void BalanceOxygenWithNeighbours(float DeltaTime);
 
 	UFUNCTION(BlueprintCallable)
 	void CheckForLeak();
@@ -43,11 +43,18 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	FTimerHandle CheckLeakHandle;
 
+	UPROPERTY(VisibleAnywhere)
+	FTimerHandle SetOxygenatedStateForHumansHandle;
+
+
 	UFUNCTION(BlueprintCallable)
 	void HandleLeak(bool leak, float DeltaTime);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetOxygenatedStateForHumans();
 
 	UFUNCTION(BlueprintCallable)
 	float GetOxygenCount();

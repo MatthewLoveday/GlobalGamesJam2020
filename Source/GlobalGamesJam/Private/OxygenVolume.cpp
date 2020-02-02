@@ -4,6 +4,7 @@
 #include "OxygenVolume.h"
 #include "TimerManager.h"
 #include "TileBase.h"
+#include "Human.h"
 
 // Sets default values
 AOxygenVolume::AOxygenVolume()
@@ -45,18 +46,20 @@ void AOxygenVolume::BeginPlay()
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(CheckLeakHandle, this, &AOxygenVolume::CheckForLeak, 3.0f, true);
-	
+	GetWorld()->GetTimerManager().SetTimer(SetOxygenatedStateForHumansHandle, this, &AOxygenVolume::SetOxygenatedStateForHumans, 3.0f, true);
 }
 
-void AOxygenVolume::BalanceOxygenWithNeighbours()
+void AOxygenVolume::BalanceOxygenWithNeighbours(float DeltaTime)
 {
 	//if any neighbour has less oxygen, send it 0.01;
 	for(int i = 0; i < NeighbouringOxygenVolumes.Num(); i++)
 	{
 		if(OxygenCount > NeighbouringOxygenVolumes[i]->GetOxygenCount())
 		{
-			NeighbouringOxygenVolumes[i]->OxygenCount += 0.01f;
-			OxygenCount -= 0.01f;
+			float o2Delta = FMath::Max(FMath::Abs(NeighbouringOxygenVolumes[i]->OxygenCount - OxygenCount), 0.8f);
+			
+			NeighbouringOxygenVolumes[i]->OxygenCount += 1.0f * o2Delta * DeltaTime;
+			OxygenCount -= 1.0f * o2Delta * DeltaTime;
 		}
 	}
 }
@@ -105,8 +108,21 @@ void AOxygenVolume::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	BalanceOxygenWithNeighbours();
+	BalanceOxygenWithNeighbours(DeltaTime);
 
 	HandleLeak(HasLeak, DeltaTime);
+}
+
+void AOxygenVolume::SetOxygenatedStateForHumans()
+{
+	TArray<AActor*> Humans;
+	GetOverlappingActors(Humans, AHuman::StaticClass());
+
+	for (int i = 0; i < Humans.Num(); ++i)
+	{
+		Cast<AHuman>(Humans[i])->InOxygenatedState = HasOxygen();
+
+		ConsumeOxygen(2.0f);
+	}
 }
 

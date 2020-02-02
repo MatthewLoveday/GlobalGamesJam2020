@@ -3,3 +3,7 @@
 
 #include "Human.h"
 
+void AHuman::SetOxygenated(bool oxygenated)
+{
+	InOxygenatedState = oxygenated;
+}
