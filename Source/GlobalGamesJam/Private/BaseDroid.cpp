@@ -202,7 +202,8 @@ void ABaseDroid::Tick(float DeltaTime)
 		{
 			APickupActor* pickup = nullptr;
 			bool successfulHit = false;
-			
+
+			this->SendInteractToDisplay();
 			for (int32 i = 0; i < outHits.Num(); i++)
 			{
 				pickup = Cast<APickupActor>(outHits[i].Actor);
@@ -286,7 +287,8 @@ void ABaseDroid::Tick(float DeltaTime)
 		//cast outhit to ITile
 		ATileBase* tileInterface;
 		bool successfulHit = false;
-		
+
+		this->SendInteractToDisplay();
 		for (int32 i = 0; i < outHits.Num(); i++)
 		{
 			tileInterface = Cast<ATileBase>(outHits[i].Actor);
@@ -369,10 +371,6 @@ void ABaseDroid::Tick(float DeltaTime)
 		}
 	}
 
-	if (hoveredPickup != nullptr || hoveredTile != nullptr)
-	{
-		this->SendInteractToDisplay();
-	}
 }
 
 // Called to bind functionality to input
