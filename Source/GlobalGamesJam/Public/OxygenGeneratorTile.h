@@ -18,5 +18,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float GenerationRate;
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	
 	AOxygenGeneratorTile();
 };

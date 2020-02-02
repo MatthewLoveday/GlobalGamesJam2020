@@ -24,6 +24,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool HasLeak;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int LeakCount;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,6 +34,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<class ATileBase*> RelevantTiles;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<class AOxygenGeneratorTile*> OxygenGeneratorTiles;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<AOxygenVolume*> NeighbouringOxygenVolumes;
 
@@ -46,9 +52,12 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	FTimerHandle SetOxygenatedStateForHumansHandle;
 
-
 	UFUNCTION(BlueprintCallable)
 	void HandleLeak(bool leak, float DeltaTime);
+
+	UFUNCTION(BlueprintCallable)
+	void TickOxygenGenerator(float DeltaTime);
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

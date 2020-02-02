@@ -5,6 +5,7 @@
 #include "TimerManager.h"
 #include "TileBase.h"
 #include "Human.h"
+#include "OxygenGeneratorTile.h"
 
 // Sets default values
 AOxygenVolume::AOxygenVolume()
@@ -19,6 +20,7 @@ AOxygenVolume::AOxygenVolume()
 
 	OxygenCount = 100;
 	HasLeak = false;
+	LeakCount = 0;
 }
 
 // Called when the game starts or when spawned
@@ -45,6 +47,15 @@ void AOxygenVolume::BeginPlay()
 		NeighbouringOxygenVolumes.Add(Cast<AOxygenVolume>(actors[i]));
 	}
 
+	//Gather Oxygen Generators
+	GetOverlappingActors(actors, AOxygenGeneratorTile::StaticClass());
+	
+	for (int i = 0; i < actors.Num(); ++i)
+	{
+		OxygenGeneratorTiles.Add(Cast<AOxygenGeneratorTile>(actors[i]));
+	}
+	
+	
 	GetWorld()->GetTimerManager().SetTimer(CheckLeakHandle, this, &AOxygenVolume::CheckForLeak, 3.0f, true);
 	GetWorld()->GetTimerManager().SetTimer(SetOxygenatedStateForHumansHandle, this, &AOxygenVolume::SetOxygenatedStateForHumans, 3.0f, true);
 }
@@ -66,16 +77,18 @@ void AOxygenVolume::BalanceOxygenWithNeighbours(float DeltaTime)
 
 void AOxygenVolume::CheckForLeak()
 {
+	HasLeak = false;
+	LeakCount = 0;
+	
 	for (int i = 0; i < RelevantTiles.Num(); i++)
 	{
 		if(RelevantTiles[i]->HasRepairWhichLeaksOxygen())
 		{
 			HasLeak = true;
-			return;
+			LeakCount++;
 		}
 	}
 
-	HasLeak = false;
 }
 
 float AOxygenVolume::GetOxygenCount()
@@ -100,7 +113,19 @@ void AOxygenVolume::HandleLeak(bool leak, float DeltaTime)
 		return;
 	}
 
-	OxygenCount -= 1.0f * DeltaTime;
+	OxygenCount -= 1.0f * (LeakCount * 2.0f) * DeltaTime;
+}
+
+void AOxygenVolume::TickOxygenGenerator(float DeltaTime)
+{
+	for(int i = 0; i < OxygenGeneratorTiles.Num(); i++)
+	{
+		//if it's fully working
+		if(!OxygenGeneratorTiles[i]->NeedRepair())
+		{
+			OxygenCount += OxygenGeneratorTiles[i]->GenerationRate * DeltaTime;
+		}
+	}
 }
 
 // Called every frame
@@ -111,6 +136,13 @@ void AOxygenVolume::Tick(float DeltaTime)
 	BalanceOxygenWithNeighbours(DeltaTime);
 
 	HandleLeak(HasLeak, DeltaTime);
+
+	TickOxygenGenerator(DeltaTime);
+
+	if(OxygenCount > 100.0f)
+	{
+		OxygenCount = 100.0f;
+	}
 }
 
 void AOxygenVolume::SetOxygenatedStateForHumans()
