@@ -18,6 +18,7 @@ ATileBase* AGlobalGamesJamGameModeBase::GetRandomTile()
 	return GlobalTileList[FMath::RandRange(0, GlobalTileList.Num() - 1)];
 
 	BrokenTileCount = 0;
+	o2Volume = nullptr;
 }
 
 void AGlobalGamesJamGameModeBase::RegisterBuildTask(ATileBase* newBuildTask)
@@ -44,6 +45,16 @@ void AGlobalGamesJamGameModeBase::HandleEvent(EGameEvent gameEvent)
 EGameEvent AGlobalGamesJamGameModeBase::GetRandomGameEvent()
 {
 	return (EGameEvent)FMath::RandRange(0, (uint8)EGameEvent::MAX - 1);
+}
+
+int AGlobalGamesJamGameModeBase::GetOxygenLevelPercent()
+{
+	if(o2Volume != nullptr)
+	{
+		return o2Volume->GetOxygenCount();
+	}
+
+	return -1;
 }
 
 AGlobalGamesJamGameModeBase::AGlobalGamesJamGameModeBase()

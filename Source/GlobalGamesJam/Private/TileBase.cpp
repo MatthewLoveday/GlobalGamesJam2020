@@ -74,7 +74,9 @@ void ATileBase::RepairLayer()
 
 		UpdateMeshAccordingToCurrentRepairType();
 	}
-	else
+
+
+	if(m_RepairQueue.Num() == 0)
 	{
 		//Increment Global Broken Count
 		AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());

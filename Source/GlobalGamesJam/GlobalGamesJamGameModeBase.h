@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "GameEvent.h"
 #include "TileDroidIcon.h"
+#include "OxygenVolume.h"
 #include "GlobalGamesJamGameModeBase.generated.h"
 
 /**
@@ -19,6 +20,9 @@ class GLOBALGAMESJAM_API AGlobalGamesJamGameModeBase : public AGameModeBase
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EGameEvent currentGameEvent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AOxygenVolume* o2Volume;
 	
 public:
 
@@ -48,6 +52,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	EGameEvent GetRandomGameEvent();
+
+	UFUNCTION(BlueprintCallable)
+	int GetOxygenLevelPercent();
 	
 	AGlobalGamesJamGameModeBase();
 };
