@@ -6,6 +6,7 @@
 #include "DroidPlayerController.h"
 #include "BaseDroid.h"
 #include "TileBase.h"
+#include "Math/UnrealMathUtility.h"
 
 void AGlobalGamesJamGameModeBase::RegisterBuildTask(ATileBase* newBuildTask)
 {
@@ -13,6 +14,17 @@ void AGlobalGamesJamGameModeBase::RegisterBuildTask(ATileBase* newBuildTask)
 	{
 		RepairQueue.Emplace(newBuildTask);
 	}
+}
+
+void AGlobalGamesJamGameModeBase::HandleEvent(EGameEvent gameEvent)
+{
+	//dispatch event to relevant functions
+	currentGameEvent = gameEvent;
+}
+
+EGameEvent AGlobalGamesJamGameModeBase::GetRandomGameEvent()
+{
+	return (EGameEvent)FMath::RandRange(0, (uint8)EGameEvent::MAX - 1);
 }
 
 AGlobalGamesJamGameModeBase::AGlobalGamesJamGameModeBase()
