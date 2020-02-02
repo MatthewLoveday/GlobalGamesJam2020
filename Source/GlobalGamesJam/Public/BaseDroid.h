@@ -54,6 +54,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	bool HasPickupAbility;
 
+	UPROPERTY(EditAnywhere)
+	bool CanOnlyPickUpHuman;
+
 	UFUNCTION(BlueprintCallable)
 	bool CanDroidDoRepair(ERepairType repairType);
 	

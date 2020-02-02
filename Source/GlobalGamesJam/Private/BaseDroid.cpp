@@ -15,6 +15,7 @@
 #include "DrawDebugHelpers.h"
 #include "Engine.h"
 #include "TileBase.h"
+#include "Human.h"
 
 
 // Sets default values
@@ -154,6 +155,9 @@ void ABaseDroid::Tick(float DeltaTime)
 	{
 		//Set position to hands position
 		CarriedItem->SetActorLocation(HandPosition->GetComponentLocation());
+
+		//Set carried rotator
+		CarriedItem->SetActorRotation(GetActorForwardVector().ToOrientationRotator());
 	}
 }
 
@@ -222,6 +226,25 @@ void ABaseDroid::Interact_Implementation()
 
 				if (pickup != nullptr)
 				{
+					if(Cast<AHuman>(pickup) != nullptr)
+					{
+						//if human and you can't pick up humans then ignore this
+
+						if(!CanOnlyPickUpHuman)
+						{
+							continue;
+						}
+					}
+					else
+					{
+						//not a human but is a valid pickup
+						if(CanOnlyPickUpHuman)
+						{
+							//ignore regular pickup
+							continue;
+						}
+					}
+					
 					CarriedItem = pickup;
 					pickup->IsBeingCarried = true;
 					break;
