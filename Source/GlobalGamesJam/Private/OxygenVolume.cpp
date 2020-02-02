@@ -143,7 +143,7 @@ void AOxygenVolume::Tick(float DeltaTime)
 	{
 		OxygenCount = 100.0f;
 	}
-	else if(OxygenCount < 100.0f)
+	else if(OxygenCount < 0.0f)
 	{
 		OxygenCount = 0.0f;
 	}
