@@ -16,6 +16,8 @@ ATileBase* AGlobalGamesJamGameModeBase::GetRandomTile()
 	}
 
 	return GlobalTileList[FMath::RandRange(0, GlobalTileList.Num() - 1)];
+
+	BrokenTileCount = 0;
 }
 
 void AGlobalGamesJamGameModeBase::RegisterBuildTask(ATileBase* newBuildTask)
@@ -24,6 +26,8 @@ void AGlobalGamesJamGameModeBase::RegisterBuildTask(ATileBase* newBuildTask)
 	{
 		RepairQueue.Emplace(newBuildTask);
 	}
+	
+	BrokenTileCount = 0;
 }
 
 void AGlobalGamesJamGameModeBase::RegisterTile(ATileBase* newTile)

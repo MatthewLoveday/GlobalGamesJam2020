@@ -76,6 +76,9 @@ void ATileBase::RepairLayer()
 	}
 	
 	isInRepair = false;
+	//Increment Global Broken Count
+	AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
+	gameMode->BrokenTileCount--;
 }
 
 bool ATileBase::IsRepaired()
@@ -146,13 +149,23 @@ void ATileBase::AddDefaultRepairsAndRegenMesh()
 {
 	AddDefaultRepairsToQueue();
 	UpdateMeshAccordingToCurrentRepairType();
+
+	//Increment Global Broken Count
+
 }
 
 void ATileBase::AddDefaultRepairsToQueue()
 {
+	//if it wasn't already broken then add it to global broken count
+	if(m_RepairQueue.Num() == 0)
+	{
+		AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
+		gameMode->BrokenTileCount++;
+	}
+	
 	//empty the repair queue
 	m_RepairQueue.Empty();
-
+	
 	//Fill it with new ones
 	m_RepairQueue = defaultRepairQueue;
 }

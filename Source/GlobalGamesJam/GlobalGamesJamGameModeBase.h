@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<ATileBase*> GlobalTileList;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int BrokenTileCount;
+	
 	UFUNCTION(BlueprintCallable)
 	ATileBase* GetRandomTile();
 	
