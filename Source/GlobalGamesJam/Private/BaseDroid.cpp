@@ -572,7 +572,7 @@ void ABaseDroid::OnRepairComplete_Implementation()
 	InSkillcheck = false;
 }
 
-void SendInteractToDisplay()
+void ABaseDroid::SendInteractToDisplay_Implementation()
 {
 	//Child Implemented
 }
