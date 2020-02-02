@@ -9,6 +9,8 @@
 #include "Containers/Map.h"
 #include "BaseDroid.h"
 #include "SkillCheckType.h"
+#include "TileDroidIcon.h"
+#include "Components/WidgetComponent.h"
 #include "TileBase.generated.h"
 
 USTRUCT(BlueprintType)

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameEvent.h"
+#include "TileDroidIcon.h"
 #include "GlobalGamesJamGameModeBase.generated.h"
 
 /**

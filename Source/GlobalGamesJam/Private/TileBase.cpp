@@ -23,9 +23,12 @@ ATileBase::ATileBase()
 void ATileBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+
 	AGlobalGamesJamGameModeBase* gameMode = Cast<AGlobalGamesJamGameModeBase>(GetWorld()->GetAuthGameMode());
 	gameMode->RegisterTile(this);
-	
+
 	if (m_RepairQueue.Num() > 0)
 	{
 		UpdateMeshAccordingToCurrentRepairType();
